@@ -58,7 +58,7 @@ const Card = ({
     <div
       key={item.id}
       className={`${styles.list__item} ${
-        selected ? styles.list__item_selected : null
+        selected ? styles.list__item_selected : ""
       }`}
       draggable
       onDragOver={dragOverHandler}

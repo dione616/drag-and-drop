@@ -42,17 +42,21 @@ const Board = ({
       onDrop={(e) => onDrop(e, board)}
       className={styles.list}
     >
-      <h3>{board.title}</h3>
-      <CardsList
-        boards={boards}
-        setBoards={setBoards}
-        board={board}
-        setCurrentBoard={setCurrentBoard}
-        currentItem={currentItem}
-        setCurrentItem={setCurrentItem}
-        currentBoard={currentBoard}
-        setIsSelected={setIsSelected}
-      />
+      <div>
+        
+        
+        {board.title}
+            <CardsList
+              boards={boards}
+              setBoards={setBoards}
+              board={board}
+              setCurrentBoard={setCurrentBoard}
+              currentItem={currentItem}
+              setCurrentItem={setCurrentItem}
+              currentBoard={currentBoard}
+              setIsSelected={setIsSelected}
+            />
+      </div>
     </div>
   );
 };
