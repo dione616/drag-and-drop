@@ -1,6 +1,6 @@
 describe("card draging", () => {
   it("test drag", () => {
-    cy.visit("http://localhost:3000")
+    cy.visit("/")
       .get(":nth-child(1) > .list__items > :nth-child(3)")
       .drag(":nth-child(2) > .list__items > :nth-child(3)");
 
@@ -29,5 +29,28 @@ describe("card draging", () => {
       .find("div")
       .last()
       .should("have.text", "task #8");
+
+    cy.reload();
+  });
+  it("drop to wrong place", () => {
+    cy.visit("http://localhost:3000")
+      .get(":nth-child(1) > .list__items > :nth-child(3)")
+      .drag(".app__main > :nth-child(1)");
+
+    cy.get(":nth-child(1) > .list__items")
+      .find("div")
+      .last()
+      .should("have.text", "task #3");
+  });
+
+  it("swap", () => {
+    cy.visit("http://localhost:3000")
+      .get(":nth-child(1) > .list__items > :nth-child(3)")
+      .drag(":nth-child(1) > .list__items > :nth-child(2)");
+
+    cy.get(":nth-child(1) > .list__items")
+      .find("div")
+      .last()
+      .should("have.text", "task #2");
   });
 });
