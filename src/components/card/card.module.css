@@ -1,0 +1,9 @@
+.list__item {
+  border: 2px solid rgb(233, 233, 233);
+  border-radius: 3px;
+  padding: 5px;
+  margin-top: 10px;
+}
+.list__item_selected {
+  background: var(--selected);
+}
