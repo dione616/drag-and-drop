@@ -6,8 +6,8 @@ import App from "../App";
 test("test drop to another list", () => {
   render(<App />);
   expect(screen.getByText(/Done/i)).toHaveTextContent(/Done/i);
-  let dropZone = screen.getByText(/in progress/i);
-  let dragElement = screen.getByText(/task #1/i);
+  const dropZone = screen.getByText(/in progress/i);
+  const dragElement = screen.getByText(/task #1/i);
 
   fireEvent.dragStart(dragElement);
   fireEvent.dragEnter(dropZone);
@@ -16,12 +16,8 @@ test("test drop to another list", () => {
   fireEvent.dragLeave(dropZone);
   fireEvent.dragEnd(dragElement);
   fireEvent.drop(dropZone);
-  
 
-  const list = dropZone.lastChild;
-  const lastInTheList = list.lastChild;
-
-  expect(lastInTheList).toHaveTextContent("task #1");
+  expect(dropZone.lastChild.lastChild).toHaveTextContent("task #1");
 });
 
 test("return back to list Todo", () => {
@@ -37,12 +33,8 @@ test("return back to list Todo", () => {
   fireEvent.dragLeave(dropZone);
   fireEvent.dragEnd(dragElement);
   fireEvent.drop(dropZone);
-  
 
-  const list = dropZone.lastChild;
-  const lastInTheList = list.lastChild;
-
-  expect(lastInTheList).toHaveTextContent("task #1");
+  expect(dropZone.lastChild.lastChild).toHaveTextContent("task #1");
 });
 
 test("drop outside of the list", () => {
@@ -58,10 +50,6 @@ test("drop outside of the list", () => {
   fireEvent.dragLeave(dropZone);
   fireEvent.dragEnd(dragElement);
   fireEvent.drop(dropZone);
-  
 
-  const list = screen.getByText(/todo/i).lastChild;
-  const lastInTheList = list.lastChild;
-  
-  expect(lastInTheList).toHaveTextContent("task #3")
+  expect(dropZone.lastChild.lastChild).toHaveTextContent("task #3");
 });
