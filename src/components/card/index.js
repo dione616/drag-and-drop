@@ -60,6 +60,8 @@ const Card = ({
       className={`${styles.list__item} ${
         selected ? styles.list__item_selected : ""
       }`}
+      aria-selected={selected}
+      role="tab"
       draggable
       onDragOver={dragOverHandler}
       onDragLeave={dragLeaveHandler}

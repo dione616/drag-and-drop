@@ -1,22 +1,15 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-
 import Card from "../components/card";
 
-test("Test Card component props update", () => {
-  let wrapper;
-  const setCurrentBoard = jest.fn();
-  const setCurrentItem = jest.fn();
-  const setIsSelected = jest.fn();
-  const setBoards = jest.fn();
-  const useStateSpy = jest.spyOn(React, "useState");
-  useStateSpy.mockImplementation((init) => [init, setCurrentBoard]);
-  const { debug, rerender, container } = render(
-    <Card item={{ id: 7, title: "task #7" }} />
-  );
-  expect(screen.getByText(/task #7/i)).toHaveTextContent(/task #7/i);
-  rerender(
+const setCurrentBoard = jest.fn();
+const setCurrentItem = jest.fn();
+const setIsSelected = jest.fn();
+const setBoards = jest.fn();
+
+const component = () => {
+  return (
     <Card
       item={{ id: 8, title: "task #8" }}
       setBoards={setBoards}
@@ -54,24 +47,37 @@ test("Test Card component props update", () => {
       ]}
     />
   );
-  expect(screen.getByText(/task #8/i)).toHaveTextContent(/task #8/i);
+};
 
-  const card = screen.getByText(/task #8/i);
-  debug(card);
-  expect(card).not.toHaveClass("list__item_selected");
+test("test card is selected after drag", () => {
+  render(component());
+
+  const card = screen.getByRole("tab", { selected: false });
 
   fireEvent.dragStart(card);
-  expect(setCurrentBoard).toHaveBeenCalledTimes(1);
-  expect(setCurrentItem).toHaveBeenCalledTimes(1);
-
   fireEvent.dragOver(card);
-  debug(card);
 
-  expect(card).toHaveClass("list__item_selected");
-
-  fireEvent.dragLeave(card);
-  debug(card);
-  expect(card).not.toHaveClass("list__item_selected");
+  expect(screen.queryByRole("tab", { selected: true })).toBeInTheDocument();
 
   fireEvent.drop(card);
+  expect(screen.queryByRole("tab", { selected: true })).not.toBeInTheDocument();
+});
+
+test("test multiple setState calls", () => {
+  render(component());
+  expect(setCurrentBoard).toHaveBeenCalledTimes(1);
+  expect(setCurrentItem).toHaveBeenCalledTimes(1);
+  expect(setBoards).toHaveBeenCalledTimes(1);
+});
+
+test("test card is not selected after drop", () => {
+  render(component());
+
+  const card = screen.getByRole("tab", { selected: false });
+
+  fireEvent.dragStart(card);
+  fireEvent.dragOver(card);
+  fireEvent.drop(card);
+
+  expect(screen.queryByRole("tab", { selected: true })).not.toBeInTheDocument();
 });
